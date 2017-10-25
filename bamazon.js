@@ -16,7 +16,7 @@ connection.connect(function(error) {
   if (error) throw error;
   console.log("Connected to Bamazon! Thread ID: " + connection.threadId);
 
-  // Prints products and then 
+  // Prints products and then sends the function a callback that will prompt the use for a response 
   printProducts(function () {
 
 	  inquirer.prompt([
@@ -126,34 +126,4 @@ function updateProduct(product, newQuantity) {
   connection.end();
 }
 
-// Creates a new product 
-function createProduct(product, quantity) {
-  var query = connection.query(
-    "INSERT INTO products SET ?",
-    {
-      flavor: "Rocky Road",
-      price: 3.0,
-      quantity: 50
-    },
-    function(error, result) {
-      console.log(quantity + " " + " added to inventory.");
-    }
-  );
 
-  // logs the actual query being run
-  console.log(query.sql);
-}
-
-// Deletes a product 
-function deleteProduct(product) {
-  console.log("Deleting product...\n");
-  connection.query(
-    "DELETE FROM products WHERE ?",
-    {
-      flavor: product
-    },
-    function(error, result) {
-      console.log(res.affectedRows + " products deleted!\n");
-    }
-  );
-}

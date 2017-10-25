@@ -11,35 +11,36 @@ var connection = mysql.createConnection({
   database: "bamazon"
 });
 
-
 // Connect to database 
 connection.connect(function(error) {
   if (error) throw error;
   console.log("Connected to Bamazon! Thread ID: " + connection.threadId);
 
-  printProducts();
+  // Prints products and then 
+  printProducts(function () {
 
-  inquirer.prompt([
-    {
-      type: "input",
-      name: "product",
-      message: "Which product would you like to buy today?"
-    },
-    {
-      type: "input",
-      name: "quantity",
-      message: "How many would like to buy?",
-    }  
-  ]).then(function(response) {
+	  inquirer.prompt([
+	    {
+	      type: "input",
+	      name: "product",
+	      message: "Which product would you like to buy today?"
+	    },
+	    {
+	      type: "input",
+	      name: "quantity",
+	      message: "How many would like to buy?",
+	    }  
+	  ]).then(function(response) {
 
-    makeOrder(response.product, response.quantity);  
- 
-  }); // Ends inquirer prompt 
+	    makeOrder(response.product, response.quantity);  
+	 
+	  }); // Ends inquirer prompt 
+  });
 
 });
 
 // Prints all products to the screen 
-function printProducts() {
+function printProducts(callback) {
   console.log("Here's what's in stock: \n");
 
   connection.query("SELECT * FROM products", function(error, result) {
@@ -59,6 +60,8 @@ function printProducts() {
       );
     }
     console.log('\n')
+    callback();
+
   });
 }
 
@@ -107,7 +110,15 @@ function makeOrder(product, quantity){
 // Updates quantity of the product 
 function updateProduct(product, newQuantity) {
   var query = connection.query(
-    "UPDATE products SET quantity = '?' WHERE product_name = '?'", [newQuantity, product],
+    "UPDATE products SET ? WHERE ?",
+            [
+              {
+                stock_quantity: newQuantity
+              },
+              {
+                product_name: product
+              }
+            ],
     function(error, result) {
       console.log("Products updated!");
     }

@@ -6,9 +6,4 @@ MySQL and Inquirer npm packages are required to run this app.
 
 This app was created using Javascript, Node, NPM, and SQL. 
 
-# This is an <h1> tag
-## This is an <h2> tag
-###### This is an <h6> tag
-
-![GitHub Logo](/images/logo.png)
-Format: ![Alt Text](url)
+Get a preview of the user flow here (video): https://github.com/danielryne/Bamazon/blob/master/images/bamazon_video.mp4
